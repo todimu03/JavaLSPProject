@@ -1,0 +1,11 @@
+ProductID,ProductName,Price,Category
+101,Laptop,899.99,Electronics
+102,Book,15.50,Books
+103,Headphones,79.99,Electronics
+104,Desk,250.00,Furniture
+105,Phone,699.99,Electronics
+106,Mouse,25.00,Electronics
+107,Monitor,450.00,Electronics
+108,Chair,120.00,Furniture
+109,Pen,1.99,Office
+110,Tablet,299.99,Electronics

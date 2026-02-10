@@ -1,0 +1,11 @@
+ProductID,ProductName,Price,Category,Price Range
+101,LAPTOP,809.99,Premium Electronics,Premium
+102,BOOK,15.50,Books,Medium
+103,HEADPHONES,71.99,Electronics,Medium
+104,DESK,250.00,Furniture,High
+105,PHONE,629.99,Premium Electronics,Premium
+106,MOUSE,22.50,Electronics,Medium
+107,MONITOR,405.00,Electronics,High
+108,CHAIR,120.00,Furniture,High
+109,PEN,1.99,Office,Low
+110,TABLET,269.99,Electronics,High
