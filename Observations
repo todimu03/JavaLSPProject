@@ -1,0 +1,12 @@
+Reflecting on Assignment 3, I refactored the ETLPipeline code from Assignment 2 by splitting it into four distinct classes, each with a clear purpose. This improved organization, readability, and maintainability, with the main improvements being object creation and adherence to the single responsibility principle.
+
+The CSVReader and CSVWriter classes handled file I/O more cleanly, making the code reusable for future CSV projects. The Product class streamlined data processing by enabling operations like applying discounts and categorizing items based on price.
+
+The ProductParser was the most crucial addition, converting raw CSV data into structured formats by cleaning characters and converting types, which improved efficiency and reliability. Using private and public attributes also reinforced encapsulation.
+
+Although Claude suggested implementing a Transformer interface and inheritance, I found that to be too complex. Instead, I added helper methods within the Product class for transformation logic, resulting in a simpler design.
+
+I also used the Optional class to handle missing data safely, preventing null-related errors. This was a new and valuable concept for me.
+
+To verify the refactored code produced the same results, I ran the ETLPipeline class as before. The main difference was that the ETLPipeline now contained far less code, with functionality delegated to new classes. Thanks to encapsulation, testing and execution remained simple.
+
