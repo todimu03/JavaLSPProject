@@ -1,0 +1,133 @@
+CRC Card 1: Transponder_Simulator
+• Class: Transponder_Simulator
+• Responsibilities:
+– Simulate an aircraft's transponder.
+– Generate a high-density data packet containing aircraft type, flight ID, altitude, speed, heading, and position.
+– Broadcast the data packet at regular intervals.
+• Collaborators:
+– Aircraft_Data_Packet
+Assumption: The problem describes the transponder as part of the arriving aircraft. This class represents that external entity within our system's model.
+
+
+CRC Card 2: Ground_Station_Receiver
+• Class: Ground_Station_Receiver
+• Responsibilities:
+– Listen for and receive raw data packets from aircraft transponders.
+– Unpack the high-density packet into its individual data fields.
+– Pass the unpacked data to the system for processing.
+• Collaborators:
+– Transponder_Simulator (as data source)
+– Aircraft_Data_Packet
+– Flight_Data_Processor
+
+
+CRC Card 3: Aircraft_Data_Packet
+• Class: Aircraft_Data_Packet
+• Responsibilities:
+– Represent the raw data received from a transponder.
+– Hold the byte-level data structure of the transmission.
+• Collaborators:
+CRC Card 4: Flight_Data_Processor
+• Class: Flight_Data_Processor
+• Responsibilities:
+– Receive unpacked flight data from the ground station.
+– Validate the incoming data for completeness and errors.
+– Translate data into a format for storage.
+– Send validated flight data to the tracker for storage.
+• Collaborators:
+– GroundStationReceiver
+– Flight_Record
+– Aircraft_Tracker
+CRC Card 5: Flight_Record
+• Class: Flight_Record
+• Responsibilities:
+– Store the state of a single aircraft at a point in time.
+– Hold attributes like flight ID, aircraft type, altitude, speed, heading, timestamp, and position.
+
+
+CRC Card 6: Aircraft_Tracker
+• Class: Aircraft_Tracker
+• Responsibilities:
+– Keep the main record of every present flight detail.
+– Refresh the saved facts for a specific aircraft using fresh input.
+– Make a new FlightRecord the moment an aircraft gets initially seen.
+– Give flight details toward other system sections when asked.
+• Collaborators:
+– Flight_Record
+– Flight_Data_Processor
+– Collision_Detector
+– Display_Updater
+– Query_Handler
+
+CRC Card 7: Display_Updater
+• Class: Display_Updater
+• Responsibilities:
+– Start a display update process each 10 seconds.
+– Fetch the most recent group of all flight information from the tracker.
+– Prepare the gathered information for the visual presentation.
+– Pass the prepared data toward the renderer for showing on the screen.
+• Collaborators:
+– System_Clock (implicit)
+– Aircraft_Tracker
+– Screen_Renderer
+
+CRC Card 8: Screen_Renderer
+• Class: Screen_Renderer
+• Responsibilities:
+– Handle the visual presentation window and the drawing environment.
+– Put plane symbols, names, and routes onto the picture.
+– Make planes that face danger stand out (for example, alter their hue).
+• Collaborators:
+– Display_Updater
+– Danger_Alert
+
+CRC Card 9: Collision_Detector
+• Class: Collision_Detector
+• Responsibilities:
+– Constantly examine present flight details for risky scenarios.
+– Look for possible crashes (missing the required distance) between sets of planes.
+– Look for other risks (like being too close to ground or limited areas).
+– Make a Danger_Alert item when a risk is found.
+• Collaborators:
+– Aircraft_Tracker
+– Airspace_Map
+– Danger_Alert
+
+CRC Card 10: Danger_Alert
+• Class: Danger_Alert
+• Responsibilities:
+– Encapsulate information about a detected dangerous situation.
+– Store the involved aircraft, the type of alert, and the severity.
+– Notify the display system to highlight the relevant aircraft.
+• Collaborators:
+– ScreenRenderer
+
+CRC Card 11: Airspace_Map
+• Class: Airspace_Map
+• Responsibilities:
+– Keep static facts concerning the airport's location.
+– Set out physical limits, forbidden areas, and ground elevations.
+– Give details regarding areas to the Collision_Detector.
+• Collaborators:
+– Collision_Detector
+
+CRC Card 12: Query_Handler
+• Class: Query_Handler
+• Responsibilities:
+– Get and make sense of requests from the controller's screen.
+– Figure out which plane the controller needs data for.
+– Pull the full flight data out of the tracker module.
+– Shape the specifics (such as using plain text) and forward them toward the controller's screen for viewing.
+• Collaborators:
+– Controller_Console
+– Aircraft_Tracker
+
+CRC Card 13: Controller_Console
+• Class: Controller_Console
+• Responsibilities:
+– Stand for the way the controller puts information in and gets output.
+– Record what the controller does, such as selecting an aircraft or typing an ID number.
+– Give the data request over to the Query_Handler component.
+– Show the full flight data that the handler sends back.
+• Collaborators:
+– Query_Handler
