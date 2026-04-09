@@ -4,7 +4,7 @@
 **Tool** Claude 
 
 
-I had already written most of evaluation.md on my own however i felt that the `processOrder()` class was doing too many things at once. I also had a rough CRC redesign drafted with three classes with an Order data class, an OrderProcessor coordinator, and a FileWriter helper.
+I had already written most of evaluation.md on my own however i felt that the processOrder() class was doing too many things at once. I also had a rough CRC redesign drafted with three classes with an Order data class, an OrderProcessor coordinator, and a FileWriter helper.
 I got stuck describing the logic bug with the discount being applied
 after the receipt was already printed, and whether my redesign needed a separate
 notification class. 

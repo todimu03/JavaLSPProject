@@ -1,4 +1,4 @@
-# Design Evaluation – OrderProcessor
+# Design Evaluation OrderProcessor
 
 ## Summary
 
