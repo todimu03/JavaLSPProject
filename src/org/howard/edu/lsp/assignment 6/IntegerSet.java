@@ -1,120 +1,116 @@
-package org.howard.edu.lsp.assignment5;
-
+package org.howard.edu.lsp.assignment6;
+ 
 import java.util.ArrayList;
 import java.util.Collections;
-
+import java.util.List;
+ 
 
 public class IntegerSet {
-
-    private ArrayList<Integer> set;
-
-    /** Constructs an empty IntegerSet. */
-    public IntegerSet() {
-        set = new ArrayList<>();
+ 
+    
+    private List<Integer> set = new ArrayList<>();
+ 
+    
+    public IntegerSet() {}
+ 
+    
+    public IntegerSet(ArrayList<Integer> set) {
+        this.set = set;
     }
-
-
+ 
+    
     public void clear() {
         set.clear();
     }
-
-
+ 
+    
     public int length() {
         return set.size();
     }
-
-
+ 
+    
     public boolean equals(IntegerSet b) {
         if (this.length() != b.length()) return false;
-        ArrayList<Integer> copy = new ArrayList<>(this.set);
-        Collections.sort(copy);
-        ArrayList<Integer> copyB = new ArrayList<>(b.set);
+        List<Integer> copyA = new ArrayList<>(set);
+        List<Integer> copyB = new ArrayList<>(b.set);
+        Collections.sort(copyA);
         Collections.sort(copyB);
-        return copy.equals(copyB);
+        return copyA.equals(copyB);
     }
-
-
+ 
+    
     public boolean contains(int value) {
         return set.contains(value);
     }
-
-
-    public int largest() throws IntegerSetException {
-        if (isEmpty()) throw new IntegerSetException("Set is empty");
+ 
+    
+    public int largest() {
+        if (isEmpty()) throw new IllegalStateException("Set is empty");
         return Collections.max(set);
     }
-
-
-    public int smallest() throws IntegerSetException {
-        if (isEmpty()) throw new IntegerSetException("Set is empty");
+ 
+    
+    public int smallest() {
+        if (isEmpty()) throw new IllegalStateException("Set is empty");
         return Collections.min(set);
     }
-
-
+ 
+    
     public void add(int item) {
         if (!set.contains(item)) {
             set.add(item);
         }
     }
-
-
+ 
+    
     public void remove(int item) {
         set.remove(Integer.valueOf(item));
     }
-
-
+ 
     public IntegerSet union(IntegerSet intSetb) {
         IntegerSet result = new IntegerSet();
-        result.set.addAll(this.set);
-        for (int val : intSetb.set) {
-            if (!result.set.contains(val)) {
-                result.set.add(val);
-            }
-        }
+        for (int val : set) result.add(val);
+        for (int val : intSetb.set) result.add(val);
         return result;
     }
-
-
+ 
+    
     public IntegerSet intersect(IntegerSet intSetb) {
         IntegerSet result = new IntegerSet();
-        for (int val : this.set) {
-            if (intSetb.set.contains(val)) {
-                result.set.add(val);
-            }
+        for (int val : set) {
+            if (intSetb.contains(val)) result.add(val);
         }
         return result;
     }
-
-
+ 
+    
     public IntegerSet diff(IntegerSet intSetb) {
         IntegerSet result = new IntegerSet();
-        for (int val : this.set) {
-            if (!intSetb.set.contains(val)) {
-                result.set.add(val);
-            }
+        for (int val : set) {
+            if (!intSetb.contains(val)) result.add(val);
         }
         return result;
     }
-
-
+ 
+    
     public IntegerSet complement(IntegerSet intSetb) {
         IntegerSet result = new IntegerSet();
         for (int val : intSetb.set) {
-            if (!this.set.contains(val)) {
-                result.set.add(val);
-            }
+            if (!this.contains(val)) result.add(val);
         }
         return result;
     }
-
  
+    
     public boolean isEmpty() {
         return set.isEmpty();
     }
-
-
+ 
+    
+    @Override
     public String toString() {
-        ArrayList<Integer> sorted = new ArrayList<>(set);
+        if (isEmpty()) return "[]";
+        List<Integer> sorted = new ArrayList<>(set);
         Collections.sort(sorted);
         return sorted.toString();
     }

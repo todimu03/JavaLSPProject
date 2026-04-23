@@ -1,302 +1,316 @@
 package org.howard.edu.lsp.assignment6;
-
-import org.junit.jupiter.api.BeforeEach;
+ 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+ 
 import static org.junit.jupiter.api.Assertions.*;
-
+ 
 
 public class IntegerSetTest {
-
-    private IntegerSet setA;
-    private IntegerSet setB;
-
-    @BeforeEach
-    public void setUp() {
-        setA = new IntegerSet();
-        setB = new IntegerSet();
-    }
+ 
 
     @Test
-    @DisplayName("clear() – normal: removes all elements")
+    @DisplayName("Test clear() - normal case: non-empty set becomes empty")
     public void testClearNormal() {
-        setA.add(1);
-        setA.add(2);
-        setA.clear();
-        assertTrue(setA.isEmpty(), "Set should be empty after clear()");
+        IntegerSet set = new IntegerSet();
+        set.add(1);
+        set.add(2);
+        set.clear();
+        assertTrue(set.isEmpty(), "Set should be empty after clear()");
+        assertEquals(0, set.length(), "Length should be 0 after clear()");
     }
-
+ 
     @Test
-    @DisplayName("clear() – edge: clearing an already-empty set")
+    @DisplayName("Test clear() - edge case: clearing already-empty set")
     public void testClearAlreadyEmpty() {
-        setA.clear(); // should not throw
-        assertTrue(setA.isEmpty());
-        assertEquals(0, setA.length());
+        IntegerSet set = new IntegerSet();
+        set.clear(); // should not throw
+        assertTrue(set.isEmpty());
+        assertEquals(0, set.length());
     }
+ 
 
     @Test
-    @DisplayName("length() – normal: correct count after adds")
+    @DisplayName("Test length() - normal case: set with multiple elements")
     public void testLengthNormal() {
-        setA.add(10);
-        setA.add(20);
-        setA.add(30);
-        assertEquals(3, setA.length());
+        IntegerSet set = new IntegerSet();
+        set.add(10);
+        set.add(20);
+        set.add(30);
+        assertEquals(3, set.length());
     }
-
+ 
     @Test
-    @DisplayName("length() – edge: empty set has length 0")
+    @DisplayName("Test length() - edge case: empty set has length 0")
     public void testLengthEmpty() {
-        assertEquals(0, setA.length());
+        IntegerSet set = new IntegerSet();
+        assertEquals(0, set.length());
     }
+ 
 
     @Test
-    @DisplayName("equals() – normal: same elements same order")
+    @DisplayName("Test equals() - normal case: identical sets in same order")
     public void testEqualsNormal() {
-        setA.add(1); setA.add(2); setA.add(3);
-        setB.add(1); setB.add(2); setB.add(3);
-        assertTrue(setA.equals(setB));
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(1); b.add(2); b.add(3);
+        assertTrue(a.equals(b));
     }
-
+ 
     @Test
-    @DisplayName("equals() – edge: same elements different order")
+    @DisplayName("Test equals() - edge case: same elements in different order")
     public void testEqualsDifferentOrder() {
-        setA.add(1); setA.add(2); setA.add(3);
-        setB.add(3); setB.add(1); setB.add(2);
-        assertTrue(setA.equals(setB), "Sets with same elements in different order should be equal");
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(3); b.add(1); b.add(2);
+        assertTrue(a.equals(b));
     }
-
+ 
     @Test
-    @DisplayName("equals() – edge: different elements returns false")
+    @DisplayName("Test equals() - edge case: sets with different elements")
     public void testEqualsMismatch() {
-        setA.add(1); setA.add(2);
-        setB.add(1); setB.add(99);
-        assertFalse(setA.equals(setB));
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(1); b.add(2);
+        assertFalse(a.equals(b));
     }
+ 
 
     @Test
-    @DisplayName("equals() – edge: different sizes returns false")
-    public void testEqualsDifferentSize() {
-        setA.add(1); setA.add(2);
-        setB.add(1);
-        assertFalse(setA.equals(setB));
-    }
-
-    @Test
-    @DisplayName("contains() – normal: value present")
+    @DisplayName("Test contains() - normal case: value present in set")
     public void testContainsPresent() {
-        setA.add(5);
-        assertTrue(setA.contains(5));
+        IntegerSet set = new IntegerSet();
+        set.add(5); set.add(10); set.add(15);
+        assertTrue(set.contains(10));
     }
-
+ 
     @Test
-    @DisplayName("contains() – edge: value not present")
+    @DisplayName("Test contains() - edge case: value not present in set")
     public void testContainsAbsent() {
-        setA.add(5);
-        assertFalse(setA.contains(99), "Should return false for value not in set");
+        IntegerSet set = new IntegerSet();
+        set.add(5); set.add(10);
+        assertFalse(set.contains(99));
     }
+ 
 
     @Test
-    @DisplayName("largest() – normal: returns max of multiple elements")
-    public void testLargestNormal() throws IntegerSetException {
-        setA.add(3); setA.add(7); setA.add(1);
-        assertEquals(7, setA.largest());
+    @DisplayName("Test largest() - normal case: set with multiple elements")
+    public void testLargestNormal() {
+        IntegerSet set = new IntegerSet();
+        set.add(3); set.add(1); set.add(7); set.add(4);
+        assertEquals(7, set.largest());
     }
+ 
+    @Test
+    @DisplayName("Test largest() - edge case: single element set")
+    public void testLargestSingleElement() {
+        IntegerSet set = new IntegerSet();
+        set.add(42);
+        assertEquals(42, set.largest());
+    }
+ 
+    @Test
+    @DisplayName("Test largest() - edge case: throws exception on empty set")
+    public void testLargestEmptySetThrows() {
+        IntegerSet set = new IntegerSet();
+        assertThrows(IllegalStateException.class, set::largest);
+    }
+ 
 
     @Test
-    @DisplayName("largest() – edge: single element set")
-    public void testLargestSingleElement() throws IntegerSetException {
-        setA.add(42);
-        assertEquals(42, setA.largest());
+    @DisplayName("Test smallest() - normal case: set with multiple elements")
+    public void testSmallestNormal() {
+        IntegerSet set = new IntegerSet();
+        set.add(3); set.add(1); set.add(7); set.add(4);
+        assertEquals(1, set.smallest());
     }
+ 
+    @Test
+    @DisplayName("Test smallest() - edge case: single element set")
+    public void testSmallestSingleElement() {
+        IntegerSet set = new IntegerSet();
+        set.add(99);
+        assertEquals(99, set.smallest());
+    }
+ 
+    @Test
+    @DisplayName("Test smallest() - edge case: throws exception on empty set")
+    public void testSmallestEmptySetThrows() {
+        IntegerSet set = new IntegerSet();
+        assertThrows(IllegalStateException.class, set::smallest);
+    }
+ 
 
     @Test
-    @DisplayName("largest() – edge: empty set throws IntegerSetException")
-    public void testLargestEmptyThrows() {
-        assertThrows(IntegerSetException.class, () -> setA.largest());
-    }
-
-
-    @Test
-    @DisplayName("smallest() – normal: returns min of multiple elements")
-    public void testSmallestNormal() throws IntegerSetException {
-        setA.add(3); setA.add(7); setA.add(1);
-        assertEquals(1, setA.smallest());
-    }
-
-    @Test
-    @DisplayName("smallest() – edge: single element set")
-    public void testSmallestSingleElement() throws IntegerSetException {
-        setA.add(-5);
-        assertEquals(-5, setA.smallest());
-    }
-
-    @Test
-    @DisplayName("smallest() – edge: empty set throws IntegerSetException")
-    public void testSmallestEmptyThrows() {
-        assertThrows(IntegerSetException.class, () -> setA.smallest());
-    }
-
-    @Test
-    @DisplayName("add() – normal: adds a new element")
+    @DisplayName("Test add() - normal case: adding new values increases length")
     public void testAddNormal() {
-        setA.add(10);
-        assertTrue(setA.contains(10));
-        assertEquals(1, setA.length());
+        IntegerSet set = new IntegerSet();
+        set.add(1);
+        set.add(2);
+        set.add(3);
+        assertEquals(3, set.length());
+        assertTrue(set.contains(2));
     }
-
+ 
     @Test
-    @DisplayName("add() – edge: duplicate values are not added twice")
+    @DisplayName("Test add() - edge case: duplicate values are not added twice")
     public void testAddDuplicate() {
-        setA.add(5);
-        setA.add(5);
-        assertEquals(1, setA.length(), "Duplicate should not increase length");
-        assertTrue(setA.contains(5));
+        IntegerSet set = new IntegerSet();
+        set.add(5);
+        set.add(5); // duplicate
+        assertEquals(1, set.length(), "Duplicate should not increase length");
     }
-
+ 
 
     @Test
-    @DisplayName("remove() – normal: removes an existing element")
+    @DisplayName("Test remove() - normal case: existing value is removed")
     public void testRemoveNormal() {
-        setA.add(1); setA.add(2); setA.add(3);
-        setA.remove(2);
-        assertFalse(setA.contains(2));
-        assertEquals(2, setA.length());
+        IntegerSet set = new IntegerSet();
+        set.add(1); set.add(2); set.add(3);
+        set.remove(2);
+        assertFalse(set.contains(2));
+        assertEquals(2, set.length());
     }
-
+ 
     @Test
-    @DisplayName("remove() – edge: removing value not present does nothing")
+    @DisplayName("Test remove() - edge case: removing a value not present does nothing")
     public void testRemoveNotPresent() {
-        setA.add(1);
-        setA.remove(99); // should not throw
-        assertEquals(1, setA.length());
-        assertTrue(setA.contains(1));
+        IntegerSet set = new IntegerSet();
+        set.add(1); set.add(2);
+        set.remove(99); // should not throw
+        assertEquals(2, set.length(), "Length should be unchanged");
     }
-
+ 
+  
     @Test
-    @DisplayName("union() – normal: combines two non-empty sets")
+    @DisplayName("Test union() - normal case: two overlapping sets")
     public void testUnionNormal() {
-        setA.add(1); setA.add(2);
-        setB.add(3); setB.add(4);
-        setA.union(setB);
-        assertTrue(setA.contains(1));
-        assertTrue(setA.contains(2));
-        assertTrue(setA.contains(3));
-        assertTrue(setA.contains(4));
-        assertEquals(4, setA.length());
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(2); b.add(3); b.add(4);
+        IntegerSet result = a.union(b);
+        assertEquals(4, result.length());
+        assertTrue(result.contains(1));
+        assertTrue(result.contains(4));
     }
-
+ 
     @Test
-    @DisplayName("union() – edge: union with empty set leaves set unchanged")
+    @DisplayName("Test union() - edge case: union with empty set returns copy of original")
     public void testUnionWithEmpty() {
-        setA.add(1); setA.add(2);
-        setA.union(setB); // setB is empty
-        assertEquals(2, setA.length());
-        assertTrue(setA.contains(1));
-        assertTrue(setA.contains(2));
+        IntegerSet a = new IntegerSet();
+        IntegerSet empty = new IntegerSet();
+        a.add(1); a.add(2);
+        IntegerSet result = a.union(empty);
+        assertEquals(2, result.length());
+        assertTrue(result.contains(1));
+        assertTrue(result.contains(2));
     }
-
+ 
     @Test
-    @DisplayName("union() – edge: no duplicates added on overlap")
-    public void testUnionNoDuplicates() {
-        setA.add(1); setA.add(2);
-        setB.add(2); setB.add(3);
-        setA.union(setB);
-        assertEquals(3, setA.length());
-    }
-
-    @Test
-    @DisplayName("intersect() – normal: keeps common elements")
+    @DisplayName("Test intersect() - normal case: two overlapping sets")
     public void testIntersectNormal() {
-        setA.add(1); setA.add(2); setA.add(3);
-        setB.add(2); setB.add(3); setB.add(4);
-        setA.intersect(setB);
-        assertTrue(setA.contains(2));
-        assertTrue(setA.contains(3));
-        assertFalse(setA.contains(1));
-        assertFalse(setA.contains(4));
-        assertEquals(2, setA.length());
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(2); b.add(3); b.add(4);
+        IntegerSet result = a.intersect(b);
+        assertEquals(2, result.length());
+        assertTrue(result.contains(2));
+        assertTrue(result.contains(3));
     }
-
+ 
     @Test
-    @DisplayName("intersect() – edge: no common elements results in empty set")
+    @DisplayName("Test intersect() - edge case: no common elements yields empty set")
     public void testIntersectNoCommon() {
-        setA.add(1); setA.add(2);
-        setB.add(3); setB.add(4);
-        setA.intersect(setB);
-        assertTrue(setA.isEmpty(), "Intersection of disjoint sets should be empty");
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2);
+        b.add(3); b.add(4);
+        IntegerSet result = a.intersect(b);
+        assertTrue(result.isEmpty());
     }
-
-
+ 
     @Test
-    @DisplayName("diff() – normal: removes elements in setB from setA")
+    @DisplayName("Test diff() - normal case: elements in a but not in b")
     public void testDiffNormal() {
-        setA.add(1); setA.add(2); setA.add(3);
-        setB.add(2); setB.add(3);
-        setA.diff(setB);
-        assertTrue(setA.contains(1));
-        assertFalse(setA.contains(2));
-        assertFalse(setA.contains(3));
-        assertEquals(1, setA.length());
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(2); b.add(3); b.add(4);
+        IntegerSet result = a.diff(b);
+        assertEquals(1, result.length());
+        assertTrue(result.contains(1));
     }
-
+ 
     @Test
-    @DisplayName("diff() – edge: identical sets result in empty set")
+    @DisplayName("Test diff() - edge case: identical sets yield empty diff")
     public void testDiffIdenticalSets() {
-        setA.add(1); setA.add(2);
-        setB.add(1); setB.add(2);
-        setA.diff(setB);
-        assertTrue(setA.isEmpty(), "Diff of identical sets should be empty");
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(1); b.add(2); b.add(3);
+        IntegerSet result = a.diff(b);
+        assertTrue(result.isEmpty());
     }
-
+ 
     @Test
-    @DisplayName("complement() – normal: elements in setB not in setA")
+    @DisplayName("Test complement() - normal case: elements in b not in a")
     public void testComplementNormal() {
-        setA.add(1); setA.add(2);
-        setB.add(1); setB.add(2); setB.add(3); setB.add(4);
-        setA.complement(setB);
-        assertTrue(setA.contains(3));
-        assertTrue(setA.contains(4));
-        assertFalse(setA.contains(1));
-        assertFalse(setA.contains(2));
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2); a.add(3);
+        b.add(2); b.add(3); b.add(4);
+        IntegerSet result = a.complement(b);
+        assertEquals(1, result.length());
+        assertTrue(result.contains(4));
     }
-
+ 
     @Test
-    @DisplayName("complement() – edge: disjoint sets — all of setB becomes result")
+    @DisplayName("Test complement() - edge case: disjoint sets yield all elements of b")
     public void testComplementDisjoint() {
-        setA.add(1); setA.add(2);
-        setB.add(3); setB.add(4);
-        setA.complement(setB);
-        assertTrue(setA.contains(3));
-        assertTrue(setA.contains(4));
-        assertEquals(2, setA.length());
+        IntegerSet a = new IntegerSet();
+        IntegerSet b = new IntegerSet();
+        a.add(1); a.add(2);
+        b.add(3); b.add(4);
+        IntegerSet result = a.complement(b);
+        assertEquals(2, result.length());
+        assertTrue(result.contains(3));
+        assertTrue(result.contains(4));
     }
+ 
 
     @Test
-    @DisplayName("isEmpty() – edge: empty set returns true")
+    @DisplayName("Test isEmpty() - edge case: newly created set is empty")
     public void testIsEmptyTrue() {
-        assertTrue(setA.isEmpty());
+        IntegerSet set = new IntegerSet();
+        assertTrue(set.isEmpty());
     }
-
+ 
     @Test
-    @DisplayName("isEmpty() – normal: non-empty set returns false")
+    @DisplayName("Test isEmpty() - normal case: non-empty set returns false")
     public void testIsEmptyFalse() {
-        setA.add(1);
-        assertFalse(setA.isEmpty());
+        IntegerSet set = new IntegerSet();
+        set.add(1);
+        assertFalse(set.isEmpty());
     }
-
+ 
     
     @Test
-    @DisplayName("toString() – normal: correct format for populated set")
+    @DisplayName("Test toString() - normal case: elements appear sorted with correct format")
     public void testToStringNormal() {
-        setA.add(1); setA.add(2); setA.add(3);
-        String result = setA.toString();
-        assertEquals("[1, 2, 3]", result);
+        IntegerSet set = new IntegerSet();
+        set.add(3); set.add(1); set.add(2);
+        assertEquals("[1, 2, 3]", set.toString());
     }
-
+ 
     @Test
-    @DisplayName("toString() – edge: empty set returns []")
+    @DisplayName("Test toString() - edge case: empty set returns []")
     public void testToStringEmpty() {
-        assertEquals("[]", setA.toString());
+        IntegerSet set = new IntegerSet();
+        assertEquals("[]", set.toString());
     }
 }
